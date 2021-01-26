@@ -83,9 +83,10 @@ function focusPlusContext(data) {
      * Task 5 - Set the axes scales, both for focus and context.
      */
     xScale.domain([minDate,maxDate]);
-    yScale.domain([minMag,maxMag]);
+    yScale.domain([maxMag + 0.5, minMag - 1.6]);
     navXScale.domain([minDate,maxDate])
     navYScale.domain([minMag,maxMag])
+
     //<---------------------------------------------------------------------------------------------------->
 
     /**
@@ -142,8 +143,13 @@ function focusPlusContext(data) {
      * Task 10 - Call x and y axis
      */
     focus.append("g")
+    .attr("class", "axis-x")
+    .attr("transform", "translate(0," + (height + ")"))
+    .call(xAxis);
     //here..
     focus.append("g")
+    .attr("class", "axis-y")
+    .call(yAxis)
     //here..
 
     //Add y axis label to the scatter plot
@@ -164,7 +170,10 @@ function focusPlusContext(data) {
      * Task 11 - Plot the dots on the focus graph.
      */
     selected_dots = dots.selectAll("dot")
-        //here..
+        .data(data.features)
+        .enter().append("circle")
+        .attr("class", "dot")
+        .style("opacity",0.6)
         .filter(function (d) { return d.properties.EQ_PRIMARY != null })
         .attr("cx", function (d) {
             return xScale(parseDate(d.properties.Date));
@@ -177,6 +186,7 @@ function focusPlusContext(data) {
      * Task 12 - Call plot function
      * plot(points,nr,nr) no need to send any integers!
      */
+    points.plot(selected_dots);
 
     //<---------------------------------------------------------------------------------------------------->
 
@@ -193,7 +203,7 @@ function focusPlusContext(data) {
             /**
              * Task 13 - Update information in the "tooltip" by calling the tooltip function.
              */
-
+            points.tooltip(d)
 
             //Rescale the dots onhover
             d3.select(this).attr('r', 15)
@@ -249,8 +259,11 @@ function focusPlusContext(data) {
      * The brush function is trying to access things in scatter plot which are not yet
      * implmented if we put the brush before.
      */
+    context.append("g")
+    .attr("class", "brush")
+    .call(brush)
+    .call(brush.move, xScale.range());
 
-    //here..
 
     //<---------------------------------------------------------------------------------------------------->
 
