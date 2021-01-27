@@ -125,7 +125,7 @@ function focusPlusContext(data) {
       * plot(points,nr,nr) try to use different numbers for the scaling.
       */
      
-     var points = new Points();
+     //var points = new Points();
      points.plot(small_points,5,5);
 
 
@@ -295,7 +295,7 @@ function focusPlusContext(data) {
             /**
              * Remove comment for updating dots on the map.
              */
-            //curr_points_view = world_map.change_map_points(curr_view_erth)
+            curr_points_view = world_map.change_map_points(curr_view_erth)
         }
     }
 
